@@ -4,12 +4,13 @@ import { Configuration, OpenAIApi } from "openai";
 
 import { checkSubscription } from "@/lib/subscription";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
+import axios from "axios";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const openai = new OpenAIApi(configuration);
+//const openai = new OpenAIApi(configuration);
 
 export async function POST(req: Request) {
   try {
@@ -49,11 +50,28 @@ export async function POST(req: Request) {
       );
     }
 
+    /*
     const response = await openai.createImage({
       prompt,
       n: parseInt(amount, 10),
       size: resolution,
-    });
+    });*/
+    const url = 'https://openaitestdj.openai.azure.com/openai/deployments/Dalle3/images/generations?api-version=2024-02-15-preview';
+    const response = await axios.post(url,
+      {
+        prompt: prompt,
+        n: 1,
+        size: "1024x1024",
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          'Api-Key': configuration.apiKey.toString(),
+        }
+      }
+    );
+  
+    console.log(response.data);
 
     if (!isPro) {
       await incrementApiLimit();

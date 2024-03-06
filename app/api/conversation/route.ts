@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { Configuration, OpenAIApi } from "openai";
 import { checkSubscription } from "@/lib/subscription";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
+import axios from "axios";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -40,10 +41,23 @@ export async function POST(req: Request) {
       );
     }
 
+    /*
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages,
-    });
+    });*/
+    const url = 'https://openaitestdj.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2024-02-15-preview';
+    const response = await axios.post(url,
+      {
+        messages: messages,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          'Api-Key': configuration.apiKey.toString(),
+        }
+      }
+    );
 
     if (!isPro) {
       await incrementApiLimit();
