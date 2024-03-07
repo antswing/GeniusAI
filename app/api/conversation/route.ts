@@ -9,7 +9,7 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const openai = new OpenAIApi(configuration);
+//const openai = new OpenAIApi(configuration);
 
 export async function POST(req: Request) {
   try {
@@ -21,6 +21,7 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    console.log('apiKey:'+process.env.OPENAI_API_KEY);
     if (!configuration.apiKey) {
       return new NextResponse("OpenAI API Key not configured.", {
         status: 500,

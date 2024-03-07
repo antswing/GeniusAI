@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { FreeCounter } from "@/components/free-counter";
+import { UserButton } from "@clerk/nextjs";
 
 const poppins = Montserrat ({ weight: '600', subsets: ['latin'] });
 
@@ -42,16 +43,21 @@ const routes = [
     color: "text-emerald-500",
     href: '/music',
   },
-  {
+  /*{
     label: 'Code Generation',
     icon: Code,
     color: "text-green-700",
     href: '/code',
-  },
+  },*/
   {
     label: 'Settings',
     icon: Settings,
     href: '/settings',
+  },
+  {
+    label: 'Chat',
+    icon: MessageSquare,
+    href: '/chat',
   },
 ];
 
